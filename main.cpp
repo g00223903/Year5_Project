@@ -1,131 +1,167 @@
 //incldes
-#include "mbed.h"
 #include "stdio.h"
 #include "math.h"
+#include "string.h"
 
 //P wave and PR interval default settings
-float a_pwav=0.25; //P wave amplitude
-float d_pwav=0.09; //P wave duration
-float t_pwav=0.16; //PR interval. This combined with P wave duration defines PR segment
+double a_pwav=0.25; //P wave amplitude
+double d_pwav=0.09; //P wave duration
+double t_pwav=0.16; //PR interval. This combined with P wave duration defines PR segment
 
 //Q wave default settings
-float a_qwav=0.025; //Q wave amplitude
-float d_qwav=0.066; //Q wave duration
-float t_qwav=0.166; //not adjustable in program
+double a_qwav=0.025; //Q wave amplitude
+double d_qwav=0.066; //Q wave duration
+double t_qwav=0.166; //not adjustable in program
 
 //R wave default settings
-float a_qrswav=1.6; //R wave amplitude
-float d_qrswav=0.11; //R wave duration
+double a_qrswav=1.6; //R wave amplitude
+double d_qrswav=0.11; //R wave duration
 
 //S wave default settings
-float a_swav=0.25; //S wave amplitude
-float d_swav=0.066; //S wave duration
-float t_swav=0.09; //not adjustable in program
+double a_swav=0.25; //S wave amplitude
+double d_swav=0.066; //S wave duration
+double t_swav=0.09; //not adjustable in program
 
 //T wave default settings
-float a_twav=0.35; //T wave amplitude
-float d_twav=0.142; //T wave duration
-float t_twav=0.2; //ST Interval
+double a_twav=0.35; //T wave amplitude
+double d_twav=0.142; //T wave duration
+double t_twav=0.2; //ST Interval
 
 //U wave default settings
-float a_uwav=0.035; //U wave amplitude
-float d_uwav=0.0476; //U wave duration
-float t_uwav=0.433; //not adjustable in program
+double a_uwav=0.035; //U wave amplitude
+double d_uwav=0.0476; //U wave duration
+double t_uwav=0.433; //not adjustable in program
 
 //function declarations
-void genX(float);
-void pWav (float * x, float a_pwav,float d_pwav, float t_pwav, float li);
-void pWav (float * x, float a_swav,float d_swav, float t_swav, float li);
+void genX();
+void pWav();
 
 //variables
 const double PI =  3.1415926535897;
-float x[100];
-float li = 0.4166;
+double x[100];
+
+double li = 0.4166;
 
 int main()
 {
-	genX(*x);
+    printf("\n\r*********\n\r\n\rProgram to create ECG graph.\n\r\n\r*********\n\r");
+    
+    printf("Main function calls genX()\n\r");
+    genX();  //generate x array
+    pWav();
+    genX(); //generate x array
+    qWav();
+    
 }
 
 
-void genX( float * x)
+void genX()
 {
-	for(int a = 0; x < 100; x++)
-	{
-
-		x[a] = 0.60008 + (a * 0.008);
-	}
-	genX(x);
+    int a;
+    printf("genX() creates x array and prints\n\r");
+    for( a = 0; a < 100; a++)
+    {
+        x[a] = 0.60008 + (a * 0.008);
+        printf("Array x: %.4f\n\r", x[a]);
+    }
+    printf("End of x array.\n\r");
+    printf("Calling function pWav\n\r");
+    
 }
 
 
-void pWav (float * x, float a_pwav,float d_pwav, float t_pwav, float li)
+void pWav()
 {
-	float a = a_pwav;
-	float x1  = *x + t_pwav;
-	float b = (2*li)/d_pwav;
-	float harm1, pwav1, pwav;
-	float p1 = 1/li, p2 = 0;
-
-	for(int z = 0; z < 100; z++)
-	{
-		harm1=(((sin((PI/(2*b))*(b-(2*z))))/(b-(2*z))+(sin((PI/(2*b))*(b+(2*z))))/(b+(2*z)))*(2/PI))*cos((z*PI*x1)/li);
-		p2=p2+harm1;
-	}
-
-	pwav1=p1+p2;
-	pwav=(a*pwav1);
-	/* matlab code
-	function [pwav]=p_wav(x,a_pwav,d_pwav,t_pwav,li)
-	l=li;
-	a=a_pwav;
-	x=x+t_pwav;
-	b=(2*l)/d_pwav;
-	n=100;
-	p1=1/l;
-	p2=0;
-	for i = 1:n
-	    harm1=(((sin((PI/(2*b))*(b-(2*i))))/(b-(2*i))+(sin((PI/(2*b))*(b+(2*i))))/(b+(2*i)))*(2/PI))*cos((i*PI*x)/l);
-	    p2=p2+harm1;
-	end
-	pwav1=p1+p2;
-	pwav=a*pwav1;*/
-}
-
-
-void sWav (float * x, float a_swav,float d_swav, float t_swav, float li)
-{
-	float x1=*x-t_swav;
-	float a=a_swav;
-	float b=(2*li)/d_swav;
-
-	float s1=(a/(2*b))*(2-b);
-	float s2=0;
-	double harm3, swav;
-	for(int n = 0; n < 100; n++)
-	{
-		harm3=(((2*b*a)/(n*n*PI*PI))*(1-cos(( *PI)/b)))*cos((n*PI*x1)/li);
-		s2=s2+harm3;
-
-	}
-
-	swav=-1*(s1+s2);
-
-
-/*
- * Matlab code
-
-function [swav]=s_wav(x,a_swav,d_swav,t_swav,li)
-l=li;
-x=x-t_swav;
-a=a_swav;
-b=(2*l)/d_swav;
-n=100;
-s1=(a/(2*b))*(2-b);
-s2=0;
-for i = 1:n
-    harm3=(((2*b*a)/(i*i*pi*pi))*(1-cos(( *pi)/b)))*cos((i*pi*x)/l);
-    s2=s2+harm3;
-end
-swav=-1*(s1+s2);*/
+    printf("pWav creates elements or p section of ECG\n\r");
+    double b =  9.2593;
+    double p1 = 1/li; //Value of p1:    2.4000
+    double p2[100];
+    double harm1[100];
+    int i, ii,z;
+    
+    int ct2;
+    printf("\n\r*********\n\r\n\rPrinting P2 <<<<<<<<<<<<<<\n\r\n\r*********\n\r");
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        p2[ct2] = 0;//initializing p2 array to zero
+        printf("%.8f\n\r", p2[ct2]);
+    }
+    
+    printf("\r\nValue at x[0]:%.4f\r\n",x[0]);
+    printf("\n\rDisplaying array x after adding t_pwav(0.16) to each element in x array\r\n");
+    for ( i = 0; i < 100; i++ )
+    {
+        x[ i ] += t_pwav; // set element at location i to i + t_pwav
+        // printf("Array x: %.4f\r\n ", x[i]);
+    }
+    //working correctly as far as here
+    
+    for(ii = 1; ii <= 100; ii++)
+    {
+        for(z = 0; z < 100; z++)
+        {
+            harm1[z]=(((sin((PI/(2*b))*(b-(2*ii))))/(b-(2*ii))+(sin((PI/(2*b))*(b+(2*ii))))/(b+(2*ii)))*(2/PI))*cos((ii*PI*x[z])/li);
+            p2[z] += harm1[z];
+        }
+    }
+    
+    int ct;
+    printf("\n\r*********\n\r\n\rPrinting harm1 array\n\r\n\r*********\n\r");
+    for( ct = 0; ct < 100; ct++)
+    {
+        printf("%.8f\n\r", harm1[ct]);
+    }
+    
+    printf("\n\r*********\n\r\n\rPrinting P2 array\n\r\n\r*********\n\r");
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        printf("%.8f\n\r", p2[ct2]);
+        
+    }
+    
+    
+    //Value of p1:    2.4000
+    //a_pwav = 0.25;
+    //pwav1=p1+p2;
+    
+    double pwav1[100];
+    printf("\n\r*********\n\r\n\rPrinting pwav1!!!!<<<<<<<<<<<\n\r\n\r*********\n\r");
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        pwav1[ct2] = 0;
+        printf("%.8f\n\r", pwav1[ct2]);
+    }
+    
+    printf("\n\r*********\n\r\n\rPrinting pwav1 + p1: 2.4000<<<<<<<<<<<\n\r\n\r*********\n\r");
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        pwav1[ct2] = p2[ct2] + 2.4000;
+        printf("%.8f\n\r", pwav1[ct2]);
+    }
+    
+    
+    
+    
+    
+    //pwavArray=a*pwav1;
+    double pwavArray[100];
+    printf("\n\r*********\n\r\n\rPrinting pwavArray: 0      <<<<<<<<<<<\n\r\n\r*********\n\r");
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        pwavArray[ct2] = 0;
+        printf("%.8f\n\r", pwavArray[ct2]);
+        
+    }
+    
+    double a = 0.25;
+    for(ct2=0; ct2<100; ct2++)
+    {
+        pwavArray[ct2] = a  * pwav1[ct2];
+    }
+    
+    printf("\n\r*********\n\r\n\rPrinting pwavArray + a: 0.25      <<<<<<<<<<<\n\r\n\r*********\n\r");
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        printf("%.8f\n\r", pwavArray[ct2]);
+    }
 }
