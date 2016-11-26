@@ -46,6 +46,7 @@ void qWav();
 void qrsWav();
 void sWav();
 void tWav();
+void uWav();
 
 //variables
 const double PI =  3.1415926535897;
@@ -58,22 +59,25 @@ int main(int argc, const char * argv[])
 {
     printf("\n\r*********\n\r\n\rProgram to create ECG graph.\n\r\n\r*********\n\r");
     
-    //    printf("Main function calls genX()\n\r");
-    //    genX();  //generate x array
-    //    printf("Calling function pWav\n\r");
-    //    pWav();
-    //    genX(); //generate x array
-    //    printf("Calling function qWav\n\r");
-    //    qWav();
-    //    genX(); //generate x array
-    //    printf("Calling function qrsWav\n\r");
-    //    qrsWav();
-    //    genX(); //generate x array
-    //    printf("Calling function sWav\n\r");
-    //    sWav();
+    printf("Main function calls genX()\n\r");
+    genX();  //generate x array
+    printf("Calling function pWav\n\r");
+    pWav();
+    genX(); //generate x array
+    printf("Calling function qWav\n\r");
+    qWav();
+    genX(); //generate x array
+    printf("Calling function qrsWav\n\r");
+    qrsWav();
+    genX(); //generate x array
+    printf("Calling function sWav\n\r");
+    sWav();
     genX(); //generate x array
     printf("Calling function tWav\n\r");
     tWav();
+    genX(); //generate x array
+    printf("Calling function uWav\n\r");
+    uWav();
     
 }
 
@@ -480,6 +484,66 @@ void tWav()
     }
 }
 
+void uWav()
+{
+    
+    double a = a_uwav;
+    //    x=x-t_uwav;
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        x[ ct2 ] -= t_uwav;
+        printf("%.4f <<<<<<<xArray -t_uwav uWav function\n\r", x[ct2]);
+    }
+    double b=(2*li)/d_uwav;
+    
+    double    u1=1/li;
+    double  u2[100];
+    double harm4[100];
+    double uWav1[100];
+    double uWavArray[100];
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        u2[ct2] = 0;
+        harm4[ct2] = 0;
+        uWav1[ct2] = 0;
+        uWavArray[ct2] = 0;
+    }
+    
+    
+    
+    
+    //    harm4=(((sin((pi/(2*b))*(b-(2*i))))/(b-(2*i))+(sin((pi/(2*b))*(b+(2*i))))/(b+(2*i)))*(2/pi))*cos((i*pi*x)/l);
+    
+    int ii, z;
+    for(ii = 1; ii <= 100; ii++)
+    {
+        for(z = 0; z < 100; z++)
+        {
+            harm4[z] = (((sin((PI/(2*b))*(b-(2*ii))))/(b-(2*ii))+(sin((PI/(2*b))*(b+(2*ii))))/(b+(2*ii)))*(2/PI))*cos((ii*PI*x[z])/li);
+            u2[z] +=harm4[z];
+        }
+    }
+    
+    
+    //    uwav1=u1+u2;
+    
+    
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        uWav1[ct2] = u1 + u2[ct2];
+    }
+    //    uwav=a*uwav1;
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        uWavArray[ct2] = a * uWav1[ct2];
+    }
+    
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        printf("%.4f <<<<<<<uWavArray\n\r", uWavArray[ct2]);
+    }
+    
+}
 
 
 
