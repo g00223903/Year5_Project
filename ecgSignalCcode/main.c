@@ -49,6 +49,7 @@ const double PI =  3.1415926535897;
 double x[100];
 
 double li = 0.4166;
+int ct2;
 
 int main(int argc, const char * argv[])
 {
@@ -56,8 +57,10 @@ int main(int argc, const char * argv[])
     
     printf("Main function calls genX()\n\r");
     genX();  //generate x array
+    printf("Calling function pWav\n\r");
     pWav();
     genX(); //generate x array
+    printf("Calling function qWav\n\r");
     qWav();
 }
 
@@ -71,8 +74,8 @@ void genX()
         x[a] = 0.60008 + (a * 0.008);
         printf("Array x: %.4f\n\r", x[a]);
     }
-    printf("End of x array.\n\r");
-    printf("Calling function pWav\n\r");
+   // printf("End of x array.\n\r");
+   // printf("Calling function pWav\n\r");
     
 }
 
@@ -85,16 +88,15 @@ void pWav()
     double harm1[100];
     int i, ii,z;
     
-    int ct2;
     printf("\n\r*********\n\r\n\rPrinting P2 <<<<<<<<<<<<<<\n\r\n\r*********\n\r");
     for( ct2 = 0; ct2 < 100; ct2++)
     {
         p2[ct2] = 0;//initializing p2 array to zero
-        printf("%.8f\n\r", p2[ct2]);
+        //printf("%.8f\n\r", p2[ct2]);
     }
     
-    printf("\r\nValue at x[0]:%.4f\r\n",x[0]);
-    printf("\n\rDisplaying array x after adding t_pwav(0.16) to each element in x array\r\n");
+//    printf("\r\nValue at x[0]:%.4f\r\n",x[0]);
+//    printf("\n\rDisplaying array x after adding t_pwav(0.16) to each element in x array\r\n");
     for ( i = 0; i < 100; i++ )
     {
         x[ i ] += t_pwav; // set element at location i to i + t_pwav
@@ -111,38 +113,36 @@ void pWav()
         }
     }
     
-    int ct;
-    printf("\n\r*********\n\r\n\rPrinting harm1 array\n\r\n\r*********\n\r");
-    for( ct = 0; ct < 100; ct++)
-    {
-        printf("%.8f\n\r", harm1[ct]);
-    }
-    
-    printf("\n\r*********\n\r\n\rPrinting P2 array\n\r\n\r*********\n\r");
+ 
+    //printf("\n\r*********\n\r\n\rPrinting harm1 array\n\r\n\r*********\n\r");
     for( ct2 = 0; ct2 < 100; ct2++)
     {
-        printf("%.8f\n\r", p2[ct2]);
+       // printf("%.8f\n\r", harm1[ct2]);
+    }
+    
+   // printf("\n\r*********\n\r\n\rPrinting P2 array\n\r\n\r*********\n\r");
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+       // printf("%.8f\n\r", p2[ct2]);
         
     }
     
     
-    //Value of p1:    2.4000
-    //a_pwav = 0.25;
-    //pwav1=p1+p2;
+  
     
     double pwav1[100];
-    printf("\n\r*********\n\r\n\rPrinting pwav1!!!!<<<<<<<<<<<\n\r\n\r*********\n\r");
+    //printf("\n\r*********\n\r\n\rPrinting pwav1!!!!<<<<<<<<<<<\n\r\n\r*********\n\r");
     for( ct2 = 0; ct2 < 100; ct2++)
     {
         pwav1[ct2] = 0;
-        printf("%.8f\n\r", pwav1[ct2]);
+        //printf("%.8f\n\r", pwav1[ct2]);
     }
     
-    printf("\n\r*********\n\r\n\rPrinting pwav1 + p1: 2.4000<<<<<<<<<<<\n\r\n\r*********\n\r");
+    //printf("\n\r*********\n\r\n\rPrinting pwav1 + p1: 2.4000<<<<<<<<<<<\n\r\n\r*********\n\r");
     for( ct2 = 0; ct2 < 100; ct2++)
     {
         pwav1[ct2] = p2[ct2] + 2.4000;
-        printf("%.8f\n\r", pwav1[ct2]);
+       // printf("%.8f\n\r", pwav1[ct2]);
     }
     
     
@@ -151,11 +151,11 @@ void pWav()
     
     //pwavArray=a*pwav1;
     double pwavArray[100];
-    printf("\n\r*********\n\r\n\rPrinting pwavArray: 0      <<<<<<<<<<<\n\r\n\r*********\n\r");
+    //printf("\n\r*********\n\r\n\rPrinting pwavArray: 0      <<<<<<<<<<<\n\r\n\r*********\n\r");
     for( ct2 = 0; ct2 < 100; ct2++)
     {
         pwavArray[ct2] = 0;
-        printf("%.8f\n\r", pwavArray[ct2]);
+        //printf("%.8f\n\r", pwavArray[ct2]);
         
     }
     
@@ -165,98 +165,114 @@ void pWav()
         pwavArray[ct2] = a  * pwav1[ct2];
     }
     
-    printf("\n\r*********\n\r\n\rPrinting pwavArray + a: 0.25      <<<<<<<<<<<\n\r\n\r*********\n\r");
+    
+    printf("\n\r*********\n\r\n\rPrinting pwavArray       <<<<<<<<<<<\n\r\n\r*********\n\r");
     for( ct2 = 0; ct2 < 100; ct2++)
     {
         printf("%.8f\n\r", pwavArray[ct2]);
     }
+    
+    //pwavArray is correct
 }
 
 void qWav()
 {
-    
+    double a =  a_qwav;
+    double b=(2*li)/d_qwav;
+    double q1=(a/(2*b))*(2-b);
+    double q2[100];
+    double qWavArray[100];
+    int ii, z;
+    double harm5[100];
+ 
+    printf("\n\r<<<<<<<<<<<<         qWav         >>>>>>>>>>>>>>\r\n");
+    printf("a: %.4f\r\n ", a);
+    printf("b: %.4f\r\n ", b);
+    printf("q1: %.4f\r\n ", q1);
     printf("\n\rDisplaying array x after adding t_qwav(0.166) to each element in x array\r\n");
-    
-    int ct2;
-    //pwavArray=a*pwav1;
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        x[ ct2 ] += t_qwav;
+        //printf("X array qWav: %.8f\n\r", x[ct2]);
+    }
+
     double pwavArray[100];
     printf("\n\r*********\n\r\n\rPrinting pwavArray: 0      <<<<<<<<<<<\n\r\n\r*********\n\r");
     for( ct2 = 0; ct2 < 100; ct2++)
     {
         pwavArray[ct2] = 0;
-        printf("%.8f\n\r", pwavArray[ct2]);
+       // printf("%.8f\n\r", pwavArray[ct2]);
         
     }
     
-    int i;
     
-    for ( i = 0; i < 100; i++ )
-    {
-        x[ i ] += t_qwav; // set element at location i to i + t_pwav
-        //printf("Array x: %.4f\r\n ", x[i]);
-    }
-    double a =  a_qwav;
-    printf("a: %.4f\r\n ", a);
-    double b=(2*li)/d_qwav;
-    printf("b: %.4f\r\n ", b);
-    
-    double q1=(a/(2*b))*(2-b);
-    printf("q1: %.4f\r\n ", q1);
-    
-    double q2[100];
     
     for( ct2 = 0; ct2 < 100; ct2++)
     {
-        q2[ct2] = 0;
+        q2[ct2] = 0;//setting q2 = 0
         //printf("%.8f\n\r", q2[ct2]);
     }
     
     
     
-    int ii, z;
-    double harm5[100], qWavVariable=0;
+    
     for( ct2 = 0; ct2 < 100; ct2++)
     {
-        harm5[ct2] = 0;
-        //printf("%.8f\n\r", q2[ct2]);
+        harm5[ct2] = 0;//setting harm5 = 0
+        //printf("%.8f <<<<<<<harm5 set to 0\n\r", harm5[ct2]);
     }
+    
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        q2[ct2] = 0; //setting q2array to 0
+        //printf("%.12f <<<<<<<q2 = 0\n\r", q2[ct2]);
+    }
+    
+    
     for(ii = 1; ii <= 100; ii++)
     {
         for(z = 0; z < 100; z++)
         {
-            harm5[z]=(((2*b*a)/(ii*ii*PI*PI))*(1-cos((ii*PI)/b)))*cos((ii*PI*x[z])/li);;
+            //harm5= (((2*b*a)/(i*i*pi*pi)) * (1-cos((i*pi) /b)))*cos((i* pi*x)   /l);
+            harm5[z]=(((2*b*a)/(ii*ii*PI*PI))*(1-cos((ii*PI)/b)))*cos((ii*PI*x[z])/li);
+            
             q2[z] += harm5[z];
         }
     }
     
-    printf("\n\r*********\n\r\n\rPrinting harm5 array: 0      <<<<<<<<<<<\n\r\n\r*********\n\r");
+//    for( ct2 = 0; ct2 < 100; ct2++)
+//    {
+//        printf("%.12f <<<<<<<harm5 after loop\n\r", harm5[ct2]);
+//    }
+    
+    
+    
+//    for( ct2 = 0; ct2 < 100; ct2++)
+//    {
+//        
+//        printf("%.12f <<<<<<<q2 after q2=q2+harm5\n\r", q2[ct2]);
+//    }
+    
+    
+//    qwav=-1*(q1+q2);
+    
     for( ct2 = 0; ct2 < 100; ct2++)
     {
-        //q2[ct2] = 0;
-        printf("%.10f\n\r", harm5[ct2]);
+        qWavArray[ct2] = 0;
+        //printf("%.8f <<<<<<<qWavArray set to 0\n\r", qWavArray[ct2]);
     }
     
+    //qwav=-1*(q1+q2);   q1: -0.0105
     
-    
-    
-    
-    
-    
-    for(ct2=0; ct2<100; ct2++)
+    for( ct2 = 0; ct2 < 100; ct2++)
     {
-        qWavVariable = -1* q1  * q2[ct2];
+        qWavArray[ct2] = (-1*(q1 + q2[ct2]));
+        printf("%.8f <<<<<<<qWavArray after qWavArray=-1*(q1+q2) \n\r", qWavArray[ct2]);
     }
     
-    
-    
-    qWavVariable = qWavVariable *-1;
-    
-    printf("%.10f\tqWavVariable<<<<<<<<<<<<<<<<<<<<<<\n\r", qWavVariable);
-    
-    
+    //qWavArray is correct
 }
 
-test
 
 
 
