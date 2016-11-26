@@ -44,6 +44,7 @@ void genX();
 void pWav();
 void qWav();
 void qrsWav();
+void sWav();
 
 //variables
 const double PI =  3.1415926535897;
@@ -66,6 +67,10 @@ int main(int argc, const char * argv[])
     genX(); //generate x array
     printf("Calling function qrsWav\n\r");
     qrsWav();
+    genX(); //generate x array
+    printf("Calling function sWav\n\r");
+    sWav();
+    
 }
 
 
@@ -76,11 +81,8 @@ void genX()
     for( a = 0; a < 100; a++)
     {
         x[a] = 0.60008 + (a * 0.008);
-        printf("Array x: %.4f\n\r", x[a]);
+     //   printf("Array x: %.4f\n\r", x[a]);
     }
-   // printf("End of x array.\n\r");
-   // printf("Calling function pWav\n\r");
-    
 }
 
 
@@ -92,7 +94,7 @@ void pWav()
     double harm1[100];
     int i, ii,z;
     
-    printf("\n\r*********\n\r\n\rPrinting P2 <<<<<<<<<<<<<<\n\r\n\r*********\n\r");
+    //printf("\n\r*********\n\r\n\rPrinting P2 <<<<<<<<<<<<<<\n\r\n\r*********\n\r");
     for( ct2 = 0; ct2 < 100; ct2++)
     {
         p2[ct2] = 0;//initializing p2 array to zero
@@ -201,7 +203,7 @@ void qWav()
     }
 
     double pwavArray[100];
-    printf("\n\r*********\n\r\n\rPrinting pwavArray: 0      <<<<<<<<<<<\n\r\n\r*********\n\r");
+    //printf("\n\r*********\n\r\n\rPrinting pwavArray: 0      <<<<<<<<<<<\n\r\n\r*********\n\r");
     for( ct2 = 0; ct2 < 100; ct2++)
     {
         pwavArray[ct2] = 0;
@@ -284,13 +286,13 @@ void qrsWav()
 {
 
     double a = a_qrswav;
-    printf("%.8f <<<<<<<a: \n\r", a);
+    //printf("%.8f <<<<<<<a: \n\r", a);
 
     double b =(2*li)/d_qrswav;
-    printf("%.8f <<<<<<<b: \n\r", b);
+    //printf("%.8f <<<<<<<b: \n\r", b);
 
     double qrs1=(a/(2*b))*(2-b);// -0.5888000
-    printf("%.8f <<<<<<<qrs1=-1*(q1+q2) \n\r", qrs1);
+    //printf("%.8f <<<<<<<qrs1=-1*(q1+q2) \n\r", qrs1);
 
     double qrs2[100];
     for( ct2 = 0; ct2 < 100; ct2++)
@@ -325,7 +327,7 @@ void qrsWav()
     for( ct2 = 0; ct2 < 100; ct2++)
     {
         qrsWavArray[ct2] = 0;
-        printf("%.8f <<<<<<<qrsWavArray set to 0\n\r", qrsWavArray[ct2]);
+      //  printf("%.8f <<<<<<<qrsWavArray set to 0\n\r", qrsWavArray[ct2]);
     }
     
     for( ct2 = 0; ct2 < 100; ct2++)
@@ -336,6 +338,72 @@ void qrsWav()
     {
         printf("%.8f <<<<<<<qrsWavArray\n\r", qrsWavArray[ct2]);
     }
+    
+    //qrsWavArray correct
+}
+
+void sWav()
+{
+//    x=x-t_swav;
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        x[ ct2 ] -= t_swav;
+    }
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        printf("%.5f <<<<<<<xArray -t_swav\n\r", x[ct2]);
+    }
+    
+    double a = a_swav;
+    double b=(2*li)/d_swav;
+    
+    double s1 = (a/(2*b))*(2-b);
+    double s2[100];
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        s2[ct2] = 0;
+        //  printf("%.8f <<<<<<<s2 set to 0\n\r", s2[ct2]);
+    }
+    double harm3[100];
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        harm3[ct2] = 0;
+        //  printf("%.8f <<<<<<<harm3 set to 0\n\r", harm3[ct2]);
+    }
+    
+    
+    int ii, z;
+    for(ii = 1; ii <= 100; ii++)
+    {
+        for(z = 0; z < 100; z++)
+        {
+            //harm    = (((2*b*a)/(i* i* pi*pi))*(1-cos((i *pi)/b)))*cos((i* pi * x) /l);
+            harm3[z] = (((2*b*a)/(ii*ii*PI*PI))*(1-cos((ii*PI)/b)))*cos((ii*PI*x[z])/li);
+            s2[z] +=harm3[z];
+        }
+    }
+    
+
+//    swav=-1*(s1+s2);
+    double sWavArray[100];
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        sWavArray[ct2] = 0;
+        //  printf("%.8f <<<<<<<sWavArray set to 0\n\r", sWavArray[ct2]);
+    }
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+       sWavArray[ct2] = (-1*(s1 + s2[ct2]));
+        printf("%.8f <<<<<<<qWavArray after sWavArray=-1*(q1+q2) \n\r", sWavArray[ct2]);
+    }
+    
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        //sWavArray[ct2] = 0;
+          printf("%.8f <<<<<<<sWavArray\n\r", sWavArray[ct2]);
+    }
+    //sWavArray correct
+    
 }
 
 
