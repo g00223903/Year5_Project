@@ -30,28 +30,30 @@ DigitalOut dout(LED1);
 
 int main(void)
 {
-    printf("ANALOG READ IN\n\r");
+    bool threshold = true;
     int count = 0;
+    printf("ANALOG READ IN\n\r");
     while (1) {
         // test the voltage on the initialized analog pin
         //  and if greater than 0.3 * VCC set the digital pin
         //  to a logic 1 otherwise a logic 0
         
-        if(ain > 0.5f)
+        if((ain > 0.5f) && (threshold == true) /*&& ain < 0.55f*/ )
         {
-            dout = 1;
-            // count++;
+            dout = 1; //led off
+            count++;
+            wait_us(.2);
+            threshold = false;
+            printf("%i  \r",count);
+            //wait_ms(8);
         }
-        else
+        else if(ain < 0.5f)
         {
             dout = 0;
+            threshold = true;
         }
-        // printf("Count: %d   \r", count);
         
-        
-        // printf("Analog read in: %f       \r", ain.read());
-        
-        
+        //  printf("Analog read in: %f       Count:  %d    \r", ain.read(), count);
         // print the percentage and 16 bit normalized values
         // printf("\n\rpercentage: %3.3f%%\n\r", ain.read()*100.0f);
         //        printf("normalized: 0x%04X\n\r\n\r", ain.read_u16());
