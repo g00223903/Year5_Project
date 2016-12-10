@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E38CB0021DFC291A000C3C9D /* analogReadIn.c in Sources */ = {isa = PBXBuildFile; fileRef = E38CB0001DFC291A000C3C9D /* analogReadIn.c */; };
 		E3BA059F1DE643C800553CC7 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = E3BA059E1DE643C800553CC7 /* main.c */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E38CB0001DFC291A000C3C9D /* analogReadIn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = analogReadIn.c; sourceTree = "<group>"; };
 		E3BA059B1DE643C800553CC7 /* ecgSignalCcode */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ecgSignalCcode; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3BA059E1DE643C800553CC7 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				E3BA059E1DE643C800553CC7 /* main.c */,
+				E38CB0001DFC291A000C3C9D /* analogReadIn.c */,
 			);
 			path = ecgSignalCcode;
 			sourceTree = "<group>";
@@ -118,6 +121,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E38CB0021DFC291A000C3C9D /* analogReadIn.c in Sources */,
 				E3BA059F1DE643C800553CC7 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -239,6 +243,7 @@
 				E3BA05A41DE643C800553CC7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
