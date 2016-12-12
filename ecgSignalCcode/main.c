@@ -101,19 +101,18 @@ int main(int argc, const char * argv[])
             printf("\n\rPlease enter heart rate: ");
             scanf("%i",&heartRate);
             printf("%i",heartRate);
+            
             for(ct3 = 0; ct3 < 20; ct3 ++)
             {
                 for( ct2 = 0; ct2 < 100; ct2++)
                 {
                     tri = ecgArray[ct2]/3.3;
                     wait_ms(600/heartRate);
-                    
                 }
-                //if (pc.getc()){break;}
+                if(pc.readable()){break;}
             }
         }
     }
-    
 }
 void initArrays()
 {
