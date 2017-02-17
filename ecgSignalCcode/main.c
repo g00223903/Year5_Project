@@ -9,6 +9,7 @@
 #include "stdio.h"
 #include "math.h"
 #include "string.h"
+#include "mbed.h"
 
 //P wave and PR interval default settings
 double a_pwav=0.25; //P wave amplitude
@@ -47,12 +48,14 @@ void qrsWav();
 void sWav();
 void tWav();
 void uWav();
+void initArrays();
 
 //variables
 const double PI =  3.1415926535897;
 double x[100];
 double li = 0.4166;
-int ct2, i, ii,z;
+int ct2, i, ii, z, ct3;
+
 
 double pWavArray[100];
 double  qrsWavArray[100];
@@ -61,12 +64,58 @@ double sWavArray[100];
 double uWavArray[100];
 double ecgArray[100];
 double qWavArray[100];
-
-
+AnalogOut tri(DAC0_OUT);
+Serial pc(USBTX, USBRX); // tx, rx
 int main(int argc, const char * argv[])
 {
+    int heartRate = 0;
+    printf("*************************************\n\r");
+    printf("\tECG signal generator\n\r\tInitialising Arrays...\n\r");
+    initArrays();
+    genX();  //generate x array
+    pWav();
+    genX(); //generate x array
+    qWav();
+    genX(); //generate x array
+    qrsWav();
+    genX(); //generate x array
+    sWav();
+    genX(); //generate x array
+    tWav();
+    genX(); //generate x array
+    uWav();
+    int elementCount = 0;
+    for( ct2 = 0; ct2 < 100; ct2++)
+    {
+        elementCount++;
+        ecgArray[ct2] += pWavArray[ct2] += qrsWavArray[ct2] += tWavArray[ct2] += sWavArray[ct2] += qWavArray[ct2] += uWavArray[ct2];
+    }
+    //printf("\tPress enter to begin: ");
+    printf("\n\r*************************************");
     
-    // initialize all segment arrays to 0
+    while(1)
+    {
+        printf("\r\nPress enter to begin: ");
+        if (pc.getc())
+        {
+            printf("\n\rPlease enter heart rate: ");
+            scanf("%i",&heartRate);
+            printf("%i",heartRate);
+            
+            for(ct3 = 0; ct3 < 20; ct3 ++)
+            {
+                for( ct2 = 0; ct2 < 100; ct2++)
+                {
+                    tri = ecgArray[ct2]/3.3;
+                    wait_ms(600/heartRate);
+                }
+                if(pc.readable()){break;}
+            }
+        }
+    }
+}
+void initArrays()
+{
     for( ct2 = 0; ct2 < 100; ct2++)
     {
         pWavArray[ct2] = 0;
@@ -77,61 +126,21 @@ int main(int argc, const char * argv[])
         ecgArray[ct2] = 0;
         qWavArray[ct2] = 0;
     }
-    
-    
-    printf("\n\r*********\n\r\n\rProgram to create ECG graph.\n\r\n\r*********\n\r");
-    
-    printf("Main function calls genX()\n\r");
-    genX();  //generate x array
-    printf("Calling function pWav\n\r");
-    pWav();
-    genX(); //generate x array
-    printf("Calling function qWav\n\r");
-    qWav();
-    genX(); //generate x array
-    printf("Calling function qrsWav\n\r");
-    qrsWav();
-    genX(); //generate x array
-    printf("Calling function sWav\n\r");
-    sWav();
-    genX(); //generate x array
-    printf("Calling function tWav\n\r");
-    tWav();
-    genX(); //generate x array
-    printf("Calling function uWav\n\r");
-    uWav();
-    
-    
-    
-    printf("\n\r<<<<<<<<<<<<<<<<<<\tECG Array\t>>>>>>>>>>>>>>\n\r\n\r");
-    int elementCount = 0;
-    for( ct2 = 0; ct2 < 100; ct2++)
-    {
-        elementCount++;
-        ecgArray[ct2] += pWavArray[ct2] += qrsWavArray[ct2] += tWavArray[ct2] += sWavArray[ct2] += qWavArray[ct2] += uWavArray[ct2];
-        printf("Element %d:\t%.4f\n\r", elementCount,ecgArray[ct2]);
-    }
-    printf("\n\r<<<<<<<<<<<<<<<<<<\tECG Array\t>>>>>>>>>>>>>>\n\r\n\r");
-    
-    
 }
-
 
 void genX()
 {
     int a;
-    printf("genX() creates x array\n\r");
     for( a = 0; a < 100; a++)
     {
         x[a] = 0.60008 + (a * 0.008);
-        //   printf("Array x: %.4f\n\r", x[a]);
+        
     }
 }
 
 
 void pWav()
 {
-    printf("pWav creates elements or p section of ECG\n\r");
     double b =  9.2593;
     double p2[100];
     double harm1[100];
@@ -183,7 +192,7 @@ void qWav()
         q2[ct2] = 0;
         //printf("%.8f\n\r", q2[ct2]);
     }
-
+    
     for( ct2 = 0; ct2 < 100; ct2++)
     {
         x[ ct2 ] += t_qwav;
@@ -356,7 +365,7 @@ void uWav()
     {
         uWav1[ct2] = u1 + u2[ct2];
     }
-
+    
     for( ct2 = 0; ct2 < 100; ct2++)
     {
         uWavArray[ct2] = a_uwav * uWav1[ct2];
