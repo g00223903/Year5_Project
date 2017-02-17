@@ -29,21 +29,19 @@ int main(void)
         
         temp = ain.read();
         if (temp > peakMax)
-        {
             peakMax = temp;
-        }
-        
         if(ain.read() > 0.5f && ain.read() < 0.8f)
         {
             heartBeat++;//timestamp at each beat and sotre into and an array of size 10
+            float start =  timer.start();
+            if(heartBeat == 2)
+            {
+                float end = timer.stop();
+                float interval = ((end - start) / 1000000);
+            }
             led = !led;
             while(ain.read() > 0.5f)
             {}
         }
-        //wait_ms(50);
-        
-        
     }
-    
-    
 }
