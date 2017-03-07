@@ -107,7 +107,8 @@ int main(int argc, const char * argv[])
                 for( ct2 = 0; ct2 < 100; ct2++)
                 {
                     tri = ecgArray[ct2]/3.3;
-                    wait_ms(600/heartRate);
+                    //wait_ms(600/heartRate);
+                    wait_us(600000/heartRate);
                 }
                 if(pc.readable()){break;}
             }
