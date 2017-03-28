@@ -31,7 +31,7 @@ int main() {
    
     sock.set_blocking(false);
     //sending to java server
-    printf("Sending char[] to ecggooglecloud.ddns.net...\r\n");
+    printf("Sending char[] to ip address...\r\n");
     char sbuffer[] = "Hello from client\r\n\r\n";
     int scount = sock.send(sbuffer, sizeof sbuffer);
     printf("sent %d [%.*s]\r\n", scount, strstr(sbuffer, "\r\n")-sbuffer, sbuffer);
